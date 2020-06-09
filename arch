@@ -1,6 +1,6 @@
 #!/bin/bash
 
-pacman -S vim sudo dhcpcd networkmanager grub
+pacman -S vim sudo dhcpcd networkmanager grub efibootmgr
 
 ln -sf /usr/share/zoneinfo/Europe/London /etc/localtime
 
