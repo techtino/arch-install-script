@@ -1,6 +1,6 @@
 #!/bin/bash
 
-pacman -S vi sudo dhcpcd networkmanager 
+pacman -S neovim vi sudo dhcpcd networkmanager grub
 
 ln -sf /usr/share/zoneinfo/Europe/London /etc/localtime
 
@@ -24,13 +24,28 @@ echo $hostname >> /etc/hostname
 echo -e "127.0.0.1  localhost\n::1 localhost\n127.0.0.1   $hostname.localdomain $hostname" >> /etc/hosts
 
 systemctl enable dhcpcd
-systemctl enable networkmanager
+systemctl enable NetworkManager
 
 grub-install --target=x86_64-efi --efi-directory=boot --bootloader-id=GRUB
 
 grub-mkconfig -o /boot/grub/grub.cfg
 
-
+echo Set root password:
 passwd
 
+echo Enter username for main account
+read username
+useradd -m $username
 
+echo set password for main account
+passwd techtino
+
+gpasswd -a $username wheel
+
+echo Time to edit sudoers file, uncomment wheel line
+read
+visudo
+
+echo Its time to reboot, done here!
+read
+reboot
