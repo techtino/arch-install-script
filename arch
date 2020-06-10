@@ -56,7 +56,7 @@ git clone https://github.com/techtino/Homedir-desktop
 cp -r Homedir-desktop .
 
 git clone https://aur.archlinux.org/yay-git
-cd yay
+cd yay-git
 su $username -c 'makepkg -si'
 
 su $username -c 'yay -S wpgtk-git'
