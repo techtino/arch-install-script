@@ -53,7 +53,7 @@ su $username -c 'sh -c "$(curl -fsSL https://raw.github.com/ohmyzsh/ohmyzsh/mast
 echo Downloading and copying dotfiles
 cd /home/$username
 git clone https://github.com/techtino/Homedir-desktop
-cp -r Homedir-desktop .
+cp -r Homedir-desktop/. .
 
 git clone https://aur.archlinux.org/yay-git
 
