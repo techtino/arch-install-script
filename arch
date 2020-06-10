@@ -1,6 +1,6 @@
 #!/bin/bash
 
-pacman -S python-pywal sway vim sudo dhcpcd networkmanager grub efibootmgr waybar kitty xorg-server-common xorg-server-xwayland chromium
+pacman -S pulseaudio pulseaudio-alsa pavucontrol ttf-font-awesome base-devel python-pywal sway vim neovim sudo dhcpcd networkmanager grub efibootmgr waybar kitty xorg-server-common xorg-server-xwayland chromium
 
 ln -sf /usr/share/zoneinfo/Europe/London /etc/localtime
 
@@ -46,10 +46,26 @@ echo Time to edit sudoers file, uncomment wheel line
 read
 visudo
 
+echo Installing zsh, setting as default shell and installing oh-my-zsh
+pacman -S zsh
+su $username -c 'sh -c "$(curl -fsSL https://raw.github.com/ohmyzsh/ohmyzsh/master/tools/install.sh)"'
+
 echo Downloading and copying dotfiles
 cd /home/$username
 git clone https://github.com/techtino/Homedir-desktop
-cp -r Homedir-desktop/* .
+cp -r Homedir-desktop .
+
+git clone https://aur.archlinux.org/yay-git
+cd yay
+makepkg -si
+
+su $username -c 'yay -S wpgtk-git'
+su $username -c 'yay -S bitfetch'
+
+wpg-install.sh -g
+wpg-install.sh -i
+
+chown -R $username:$username .
 
 echo Its time to reboot, done here!
 read
