@@ -61,7 +61,7 @@ cd yay-git
 su $username -c 'makepkg -si'
 cd /home/$username
 pip3 install wpgtk
-mkdir -p /home/$username/.config/wpg/templates'
+mkdir -p /home/$username/.config/wpg/templates
 chown -R $username:$username .
 su $username -c 'wpg-install.sh -g'
 su $username -c 'wpg-install.sh -i'
