@@ -1,6 +1,6 @@
 #!/bin/bash
 
-pacman -S python-pip pulseaudio pulseaudio-alsa pavucontrol ttf-font-awesome base-devel python-pywal sway wofi vim neovim sudo dhcpcd networkmanager grub efibootmgr waybar kitty xorg-server-common xorg-server-xwayland chromium
+pacman -S zsh python-pip pulseaudio pulseaudio-alsa pavucontrol ttf-font-awesome base-devel python-pywal sway wofi vim neovim sudo dhcpcd networkmanager grub efibootmgr waybar kitty xorg-server-common xorg-server-xwayland chromium
 
 ln -sf /usr/share/zoneinfo/Europe/London /etc/localtime
 
@@ -47,8 +47,10 @@ read
 visudo
 
 echo Installing zsh, setting as default shell and installing oh-my-zsh
-pacman -S zsh
 su $username -c 'sh -c "$(curl -fsSL https://raw.github.com/ohmyzsh/ohmyzsh/master/tools/install.sh)"'
+
+git clone https://github.com/zsh-users/zsh-syntax-highlighting.git ${ZSH_CUSTOM:-~/.oh-my-zsh/custom}/plugins/zsh-syntax-highlighting
+git clone https://github.com/zsh-users/zsh-autosuggestions $ZSH_CUSTOM/plugins/zsh-autosuggestions
 
 echo Downloading and copying dotfiles
 cd /home/$username
@@ -60,6 +62,11 @@ pip3 install wpgtk
 
 su $username -c 'wpg-install.sh -g'
 su $username -c 'wpg-install.sh -i'
+
+git clone https://gitlab.com/bit9tream/bitfetch.git
+cd bitfetch
+make CC=gcc bitfetch XINERAMA=NO X=NO
+make install
 
 echo Its time to reboot, done here. All thats left is to install yay and bitfetch!
 read
