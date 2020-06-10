@@ -1,6 +1,6 @@
 #!/bin/bash
 
-pacman -S vim sudo dhcpcd networkmanager grub efibootmgr
+pacman -S python-pywal sway vim sudo dhcpcd networkmanager grub efibootmgr
 
 ln -sf /usr/share/zoneinfo/Europe/London /etc/localtime
 
@@ -46,5 +46,13 @@ echo Time to edit sudoers file, uncomment wheel line
 read
 visudo
 
+echo Downloading and copying dotfiles
+git clone https://github.com/techtino/Homedir-desktop
+cp -r Homedir-desktop/* /home/$username/
+
+git clone https://aur.archlinux.org/yay-git.git
+yay-git/makepkg -si
+
+yay -S wpgtk-git
 echo Its time to reboot, done here!
 read
