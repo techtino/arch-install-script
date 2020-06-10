@@ -1,6 +1,6 @@
 #!/bin/bash
 
-pacman -S pulseaudio pulseaudio-alsa pavucontrol ttf-font-awesome base-devel python-pywal sway wofi vim neovim sudo dhcpcd networkmanager grub efibootmgr waybar kitty xorg-server-common xorg-server-xwayland chromium
+pacman -S python-pip pulseaudio pulseaudio-alsa pavucontrol ttf-font-awesome base-devel python-pywal sway wofi vim neovim sudo dhcpcd networkmanager grub efibootmgr waybar kitty xorg-server-common xorg-server-xwayland chromium
 
 ln -sf /usr/share/zoneinfo/Europe/London /etc/localtime
 
@@ -55,9 +55,12 @@ cd /home/$username
 git clone https://github.com/techtino/Homedir-desktop
 cp -r Homedir-desktop/. .
 
-git clone https://aur.archlinux.org/yay-git
+pip3 install wpgtk
+
+su $username -c 'wpg-install.sh -g'
+su $username -c 'wpg-install.sh -i'
 
 chown -R $username:$username .
 
-echo Its time to reboot, done here. All thats left is to install yay, wpgtk-git and bitfetch!
+echo Its time to reboot, done here. All thats left is to install yay and bitfetch!
 read
