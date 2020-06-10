@@ -1,6 +1,6 @@
 #!/bin/bash
 
-pacman -S python-pywal sway vim sudo dhcpcd networkmanager grub efibootmgr
+pacman -S python-pywal sway vim sudo dhcpcd networkmanager grub efibootmgr waybar kitty xorg-server-common xorg-server-xwayland chromium
 
 ln -sf /usr/share/zoneinfo/Europe/London /etc/localtime
 
