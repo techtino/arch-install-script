@@ -58,15 +58,6 @@ cp -r Homedir-desktop .
 git clone https://aur.archlinux.org/yay-git
 
 chown -R $username:$username .
-cd yay-git
 
-su $username -c 'makepkg -si'
-
-su $username -c 'yay -S wpgtk-git'
-su $username -c 'yay -S bitfetch'
-
-su $username -c 'wpg-install.sh -g'
-su $techtino -c 'wpg-install.sh -i'
-
-echo Its time to reboot, done here!
+echo Its time to reboot, done here. All thats left is to install yay, wpgtk-git and bitfetch!
 read
