@@ -1,6 +1,6 @@
 #!/bin/bash
 
-pacman -S pulseaudio pulseaudio-alsa pavucontrol ttf-font-awesome base-devel python-pywal sway vim neovim sudo dhcpcd networkmanager grub efibootmgr waybar kitty xorg-server-common xorg-server-xwayland chromium
+pacman -S pulseaudio pulseaudio-alsa pavucontrol ttf-font-awesome base-devel python-pywal sway wofi vim neovim sudo dhcpcd networkmanager grub efibootmgr waybar kitty xorg-server-common xorg-server-xwayland chromium
 
 ln -sf /usr/share/zoneinfo/Europe/London /etc/localtime
 
@@ -62,8 +62,8 @@ makepkg -si
 su $username -c 'yay -S wpgtk-git'
 su $username -c 'yay -S bitfetch'
 
-wpg-install.sh -g
-wpg-install.sh -i
+su $username -c 'wpg-install.sh -g'
+su $techtino -c 'wpg-install.sh -i'
 
 chown -R $username:$username .
 
