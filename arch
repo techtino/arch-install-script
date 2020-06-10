@@ -55,12 +55,11 @@ cd /home/$username
 git clone https://github.com/techtino/Homedir-desktop
 cp -r Homedir-desktop/. .
 
+chown -R $username:$username .
 pip3 install wpgtk
 
 su $username -c 'wpg-install.sh -g'
 su $username -c 'wpg-install.sh -i'
-
-chown -R $username:$username .
 
 echo Its time to reboot, done here. All thats left is to install yay and bitfetch!
 read
