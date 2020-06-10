@@ -42,9 +42,7 @@ passwd techtino
 
 gpasswd -a $username wheel
 
-echo Time to edit sudoers file, uncomment wheel line
-read
-visudo
+echo '%wheel ALL=(ALL) NOPASSWD: ALL' | sudo EDITOR='tee -a' visudo
 
 echo Installing zsh, setting as default shell and installing oh-my-zsh
 su $username -c 'sh -c "$(curl -fsSL https://raw.github.com/ohmyzsh/ohmyzsh/master/tools/install.sh)"'
@@ -56,8 +54,12 @@ echo Downloading and copying dotfiles
 cd /home/$username
 git clone https://github.com/techtino/Homedir-desktop
 cp -r Homedir-desktop/. .
+git clone https://aur.archlinux.org/yay-git.git
 
 chown -R $username:$username .
+cd yay-git
+su $username -c 'makepkg -si'
+cd /home/$username
 pip3 install wpgtk
 
 su $username -c 'wpg-install.sh -g'
@@ -67,6 +69,8 @@ git clone https://gitlab.com/bit9tream/bitfetch.git
 cd bitfetch
 make CC=gcc bitfetch XINERAMA=NO X=NO
 make install
+
+su $username -c 'yay -S breeze-default-cursor-theme'
 
 echo Its time to reboot, done here. All thats left is to install yay and bitfetch!
 read
