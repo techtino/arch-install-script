@@ -57,7 +57,7 @@ cp -r Homedir-desktop .
 
 git clone https://aur.archlinux.org/yay-git
 cd yay
-su $techtino -c 'makepkg -si'
+su $username -c 'makepkg -si'
 
 su $username -c 'yay -S wpgtk-git'
 su $username -c 'yay -S bitfetch'
