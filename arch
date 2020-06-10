@@ -47,12 +47,9 @@ read
 visudo
 
 echo Downloading and copying dotfiles
+cd /home/$username
 git clone https://github.com/techtino/Homedir-desktop
-cp -r Homedir-desktop/* /home/$username/
+cp -r Homedir-desktop/* .
 
-git clone https://aur.archlinux.org/yay-git.git
-yay-git/makepkg -si
-
-yay -S wpgtk-git
 echo Its time to reboot, done here!
 read
