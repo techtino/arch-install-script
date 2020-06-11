@@ -1,6 +1,6 @@
 #!/bin/bash
 
-pacman -S zsh python-pip pulseaudio pulseaudio-alsa pavucontrol ttf-font-awesome base-devel python-pywal sway wofi vim neovim dhcpcd networkmanager grub efibootmgr waybar kitty xorg-server-common xorg-server-xwayland chromium
+pacman -S zsh python-pip pulseaudio pulseaudio-alsa pavucontrol ttf-font-awesome base-devel python-pywal sway wofi vim neovim dhcpcd networkmanager grub efibootmgr waybar kitty xorg-server-common xorg-server-xwayland chromium mako wl-clipboard swaylock swayidle slurp grim pamixer
 
 ln -sf /usr/share/zoneinfo/Europe/London /etc/localtime
 
@@ -72,6 +72,21 @@ make CC=gcc bitfetch XINERAMA=NO X=NO
 make install
 
 su $username -c 'yay -S breeze-default-cursor-theme'
+su $username -c 'yay -S clipman'
+su $username -c 'yay -S wob'
+su $username -c 'yay -S autotiling'
+su $username -c 'yay -S redshift-wayland-git'
+su $username -c 'yay -S libinput-gestures'
+su $username -c 'yay -S swappy'
 
-echo Its time to reboot, done here. All thats left is to install yay and bitfetch!
+echo Setting up touchpad gestures
+
+echo -e '#!/bin/sh\ncase "$@" in\nforward )\nswaymsg seat seat0 cursor press BTN_EXTRA\nswaymsg seat seat0 cursor release BTN_EXTRA\n;;\nbackward )\nswaymsg seat seat0 cursor press BTN_SIDE\nswaymsg seat seat0 cursor release BTN_SIDE\n;;\nesac' >> /usr/local/bin/button
+
+chmod +x /usr/local/bin/button
+
+rm /etc/libinput-gestures.conf
+echo -e "gesture swipe up swaymsg -t command workspace next_on_output\ngesture swipe down swaymsg -t command workspace prev_on_output\ngesture swipe right /usr/local/bin/button backward\ngesture swipe left /usr/local/bin/button forward" >> /etc/libinput-gestures.conf
+
+echo Its time to reboot, done here.
 read
