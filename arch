@@ -82,7 +82,7 @@ su $username -c 'yay -S swappy'
 echo Setting up touchpad gestures
 
 gpasswd -a $username input
-
+gpasswd -a $username video
 echo -e '#!/bin/sh\ncase "$@" in\nforward )\nswaymsg seat seat0 cursor press BTN_EXTRA\nswaymsg seat seat0 cursor release BTN_EXTRA\n;;\nbackward )\nswaymsg seat seat0 cursor press BTN_SIDE\nswaymsg seat seat0 cursor release BTN_SIDE\n;;\nesac' >> /usr/local/bin/button
 
 chmod +x /usr/local/bin/button
