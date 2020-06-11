@@ -1,6 +1,6 @@
 #!/bin/bash
 
-pacman -S zsh python-pip pulseaudio pulseaudio-alsa pavucontrol ttf-font-awesome base-devel python-pywal sway wofi vim neovim dhcpcd networkmanager grub efibootmgr waybar kitty xorg-server-common xorg-server-xwayland chromium mako wl-clipboard swaylock swayidle slurp grim pamixer light
+pacman -S polkit-gnome playerctl thunar thunar-archive-plugin file-roller zsh python-pip pulseaudio pulseaudio-alsa pavucontrol ttf-font-awesome base-devel python-pywal sway wofi vim neovim dhcpcd networkmanager grub efibootmgr waybar kitty xorg-server-common xorg-server-xwayland chromium mako wl-clipboard swaylock swayidle slurp grim pamixer light 
 
 ln -sf /usr/share/zoneinfo/Europe/London /etc/localtime
 
@@ -8,7 +8,7 @@ hwclock --systohc
 
 echo Time to configure locales, press enter to continue
 read
-vim /etc/locale.gen
+nvim /etc/locale.gen
 
 locale-gen
 
@@ -38,7 +38,7 @@ read username
 useradd -m $username
 
 echo set password for main account
-passwd techtino
+passwd $username
 
 gpasswd -a $username wheel
 
@@ -78,7 +78,6 @@ su $username -c 'yay -S autotiling'
 su $username -c 'yay -S redshift-wayland-git'
 su $username -c 'yay -S libinput-gestures'
 su $username -c 'yay -S swappy'
-
 
 echo Setting up touchpad gestures
 
