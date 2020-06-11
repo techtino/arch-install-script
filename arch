@@ -1,6 +1,6 @@
 #!/bin/bash
 
-pacman -S polkit-gnome playerctl thunar thunar-archive-plugin file-roller zsh python-pip pulseaudio pulseaudio-alsa pavucontrol ttf-font-awesome base-devel python-pywal sway wofi vim neovim dhcpcd networkmanager grub efibootmgr waybar kitty xorg-server-common xorg-server-xwayland chromium mako wl-clipboard swaylock swayidle slurp grim pamixer light 
+pacman -S bluez bluez-utils blueman polkit-gnome playerctl thunar thunar-archive-plugin file-roller zsh python-pip pulseaudio pulseaudio-alsa pavucontrol ttf-font-awesome base-devel python-pywal sway wofi vim neovim dhcpcd networkmanager grub efibootmgr waybar kitty xorg-server-common xorg-server-xwayland chromium mako wl-clipboard swayidle slurp grim pamixer light 
 
 ln -sf /usr/share/zoneinfo/Europe/London /etc/localtime
 
@@ -25,6 +25,7 @@ echo -e "127.0.0.1  localhost\n::1 localhost\n127.0.0.1   $hostname.localdomain 
 
 systemctl enable dhcpcd
 systemctl enable NetworkManager
+systemctl enable bluetooth
 
 grub-install --target=x86_64-efi --efi-directory=/boot --bootloader-id=GRUB
 
@@ -78,6 +79,7 @@ su $username -c 'yay -S autotiling'
 su $username -c 'yay -S redshift-wayland-git'
 su $username -c 'yay -S libinput-gestures'
 su $username -c 'yay -S swappy'
+su $username -c 'yay -S swaylock-effects-git'
 
 echo Setting up touchpad gestures
 
