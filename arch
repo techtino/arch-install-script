@@ -52,8 +52,8 @@ su $username -c 'git clone https://github.com/zsh-users/zsh-autosuggestions.git 
 
 echo Downloading and copying dotfiles
 cd /home/$username
-git clone https://github.com/techtino/Homedir-desktop
-cp -r Homedir-desktop/. .
+git clone https://github.com/techtino/dotfiles
+cp -r dotfiles/. .
 git clone https://aur.archlinux.org/yay-git.git
 
 chown -R $username:$username .
