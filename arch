@@ -6,8 +6,7 @@ ln -sf /usr/share/zoneinfo/Europe/London /etc/localtime
 
 hwclock --systohc
 
-echo Time to configure locales, press enter to continue
-read
+echo Configuring Locales
 echo -e "en_GB.UTF-8 UTF-8\nen_US.UTF-8 UTF-8" >> /etc/locale.gen
 
 locale-gen
@@ -43,7 +42,7 @@ passwd $username
 
 gpasswd -a $username wheel
 
-echo '%wheel ALL=(ALL) NOPASSWD: ALL' | sudo EDITOR='tee -a' visudo
+echo '%wheel ALL=(ALL) NOPASSWD: ALL' | EDITOR='tee -a' visudo
 
 echo Installing zsh, setting as default shell and installing oh-my-zsh
 su $username -c 'sh -c "$(curl -fsSL https://raw.github.com/ohmyzsh/ohmyzsh/master/tools/install.sh)"'
