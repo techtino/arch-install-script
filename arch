@@ -1,6 +1,6 @@
 #!/bin/bash
 
-pacman -S bluez bluez-utils blueman polkit-gnome playerctl thunar thunar-archive-plugin file-roller zsh python-pip pulseaudio pulseaudio-alsa pavucontrol ttf-font-awesome base-devel python-pywal sway wofi vim neovim dhcpcd networkmanager grub efibootmgr waybar kitty xorg-server-common xorg-server-xwayland chromium mako wl-clipboard swayidle slurp grim pamixer light 
+pacman -S bluez bluez-utils blueman polkit-gnome playerctl thunar thunar-archive-plugin file-roller zsh python-pip pulseaudio pulseaudio-alsa pavucontrol ttf-font-awesome base-devel python-pywal sway wofi vim neovim dhcpcd networkmanager grub efibootmgr waybar kitty xorg-server-common xorg-server-xwayland chromium mako wl-clipboard swayidle slurp grim pamixer light noto-fonts-emoji noto-fonts-cjk
 
 ln -sf /usr/share/zoneinfo/Europe/London /etc/localtime
 
@@ -8,7 +8,7 @@ hwclock --systohc
 
 echo Time to configure locales, press enter to continue
 read
-nvim /etc/locale.gen
+echo -e "en_GB.UTF-8 UTF-8\nen_US.UTF-8 UTF-8" >> /etc/locale.gen
 
 locale-gen
 
