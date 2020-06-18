@@ -1,6 +1,6 @@
 #!/bin/bash
 
-pacman -S xorg-xinit picom i3-gaps rofi dunst noto-fonts bluez bluez-utils blueman polkit-gnome playerctl thunar thunar-archive-plugin file-roller zsh python-pip pulseaudio pulseaudio-alsa pavucontrol ttf-font-awesome base-devel python-pywal sway wofi vim neovim dhcpcd networkmanager grub efibootmgr waybar kitty xorg-server-common xorg-server-xwayland chromium mako wl-clipboard swayidle slurp grim pamixer light noto-fonts-emoji noto-fonts-cjk
+pacman -S xorg-server xorg-xinit picom i3-gaps rofi dunst noto-fonts bluez bluez-utils blueman polkit-gnome playerctl thunar thunar-archive-plugin file-roller zsh python-pip pulseaudio pulseaudio-alsa pavucontrol ttf-font-awesome base-devel python-pywal sway wofi vim neovim dhcpcd networkmanager grub efibootmgr waybar kitty xorg-server-common xorg-server-xwayland chromium mako wl-clipboard swayidle slurp grim pamixer light noto-fonts-emoji noto-fonts-cjk
 
 ln -sf /usr/share/zoneinfo/Europe/London /etc/localtime
 
