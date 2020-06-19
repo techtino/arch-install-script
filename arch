@@ -85,7 +85,7 @@ echo Setting up touchpad gestures
 
 gpasswd -a $username input
 gpasswd -a $username video
-echo -e '#!/bin/sh\ncase "$@" in\nforward )\nswaymsg seat seat0 cursor press BTN_EXTRA\nswaymsg seat seat0 cursor release BTN_EXTRA\n;;\nbackward )\nswaymsg seat seat0 cursor press BTN_SIDE\nswaymsg seat seat0 cursor release BTN_SIDE\n;;\nesac' >> /usr/local/bin/button
+echo -e '#!/bin/sh\ncase "$@" in\nforward )\nif [ -n "$WAYLAND_DISPLAY" ]; then\nswaymsg seat seat0 cursor press BTN_EXTRA\nswaymsg seat seat0 cursor release BTN_EXTRA\nelse\nxdotool alt+Right\nfi\n;;\nbackward )\nif [ -n "$WAYLAND_DISPLAY" ]; then\nswaymsg seat seat0 cursor press BTN_SIDE\nswaymsg seat seat0 cursor release BTN_SIDE\nelse\nxdotool key alt+Left\nfi\n;;\nesac' >> /usr/local/bin/button
 
 chmod +x /usr/local/bin/button
 
