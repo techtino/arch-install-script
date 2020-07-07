@@ -31,6 +31,7 @@ if [ "$WirelessConfirmation" == "N" ]; then
   EthernetAdapter=$(ls /sys/class/net | grep enp)
   echo -e "[Match]\nName=$EthernetAdapter\n\n[Network]\nDHCP=yes" >> /etc/systemd/network/20-wired.network
   systemctl enable systemd-networkd
+  systemctl enable systemd-resolved
 else
   echo Using NetworkManager
   pacman -S networkmanager
