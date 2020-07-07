@@ -105,7 +105,7 @@ if [ "$i3Confirmation" == "Y" ]; then
   su $username -c 'yay -S polybar'
 fi
 
-echo Are you using a laptop or a desktop? (L/D)
+echo "Are you using a laptop or a desktop? (L/D)"
 read DeviceType
 if [ "$DeviceType" == "L" ]; then
   pacman -S tlp light
