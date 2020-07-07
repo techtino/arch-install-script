@@ -1,6 +1,8 @@
 #!/bin/bash
 
-pacman -S wget feh tlp xorg-server xorg-xinit picom i3-gaps rofi dunst noto-fonts bluez bluez-utils blueman polkit-gnome playerctl thunar thunar-archive-plugin file-roller zsh python-pip pulseaudio pulseaudio-alsa pavucontrol ttf-font-awesome base-devel python-pywal sway wofi vim neovim networkmanager grub efibootmgr waybar kitty xorg-server-common xorg-server-xwayland chromium mako wl-clipboard swayidle slurp grim pamixer light noto-fonts-emoji noto-fonts-cjk
+pacman -S wget xorg-server noto-fonts polkit-gnome playerctl thunar thunar-archive-plugin file-roller zsh python-pip pulseaudio pulseaudio-alsa pavucontrol ttf-font-awesome base-devel python-pywal sway wofi vim neovim grub efibootmgr waybar kitty xorg-server-common xorg-server-xwayland chromium mako wl-clipboard swayidle slurp grim pamixer noto-fonts-emoji noto-fonts-cjk
+
+
 
 ln -sf /usr/share/zoneinfo/Europe/London /etc/localtime
 
@@ -22,12 +24,27 @@ echo $hostname >> /etc/hostname
 
 echo -e "127.0.0.1  localhost\n::1 localhost\n127.0.0.1   $hostname.localdomain $hostname" >> /etc/hosts
 
-systemctl enable NetworkManager
-systemctl enable bluetooth
-systemctl enable tlp
+echo "Do you have any Wireless cards in your system? (Y/N)"
+read WirelessConfirmation
+
+if [ "$WirelessConfirmation" == "N" ]; then
+  EthernetAdapter=$(ls /sys/class/net | grep enp)
+  echo -e "[Match]\nName=$EthernetAdapter\n\n[Network]\nDHCP=yes" >> /etc/systemd/network/20-wired.network
+  systemctl enable systemd-networkd
+else
+  echo Using NetworkManager
+  pacman -S networkmanager
+  systemctl enable NetworkManager
+fi
+
+echo "Do you have a bluetooth adapter?"
+read BluetoothConfirmation
+if [ "$BluetoothConfirmation" == "Y" ]; then
+  pacman -S bluez bluez-utils blueman
+  systemctl enable bluetooth
+fi
 
 grub-install --target=x86_64-efi --efi-directory=/boot --bootloader-id=GRUB
-
 grub-mkconfig -o /boot/grub/grub.cfg
 
 echo Set root password:
@@ -72,26 +89,35 @@ make CC=gcc bitfetch XINERAMA=NO X=NO
 make install
 
 su $username -c 'yay -S breeze-default-cursor-theme'
-su $username -c 'yay -S clipman'
 su $username -c 'yay -S wob'
 su $username -c 'yay -S autotiling'
 su $username -c 'yay -S redshift-wayland-git'
 su $username -c 'yay -S libinput-gestures'
 su $username -c 'yay -S swappy'
 su $username -c 'yay -S swaylock-effects-git'
-su $username -c 'yay -S polybar'
-
-echo Setting up touchpad gestures
 
 gpasswd -a $username input
 gpasswd -a $username video
-echo -e '#!/bin/sh\ncase "$@" in\nforward )\nif [ -n "$WAYLAND_DISPLAY" ]; then\nswaymsg seat seat0 cursor press BTN_EXTRA\nswaymsg seat seat0 cursor release BTN_EXTRA\nelse\nxdotool alt+Right\nfi\n;;\nbackward )\nif [ -n "$WAYLAND_DISPLAY" ]; then\nswaymsg seat seat0 cursor press BTN_SIDE\nswaymsg seat seat0 cursor release BTN_SIDE\nelse\nxdotool key alt+Left\nfi\n;;\nesac' >> /usr/local/bin/button
 
-chmod +x /usr/local/bin/button
+echo Do you wish to install i3?
+read i3Confirmation
+if [ "$i3Confirmation" == "Y" ]; then
+  pacman -S xorg-xinit picom i3-gaps rofi dunst feh 
+  su $username -c 'yay -S polybar'
+fi
 
-rm /etc/libinput-gestures.conf
-echo -e "gesture swipe up swaymsg -t command workspace next_on_output\ngesture swipe down swaymsg -t command workspace prev_on_output\ngesture swipe right /usr/local/bin/button backward\ngesture swipe left /usr/local/bin/button forward" >> /etc/libinput-gestures.conf
-
+echo Are you using a laptop or a desktop? (L/D)
+read DeviceType
+if [ "$DeviceType" == "L" ]; then
+  pacman -S tlp light
+  systemctl enable tlp
+  su $username -c 'yay -S libinput-gestures'
+  echo Setting up touchpad gestures
+  echo -e '#!/bin/sh\ncase "$@" in\nforward )\nif [ -n "$WAYLAND_DISPLAY" ]; then\nswaymsg seat seat0 cursor press BTN_EXTRA\nswaymsg seat seat0 cursor release BTN_EXTRA\nelse\nxdotool alt+Right\nfi\n;;\nbackward )\nif [ -n "$WAYLAND_DISPLAY" ]; then\nswaymsg seat seat0 cursor press BTN_SIDE\nswaymsg seat seat0 cursor release BTN_SIDE\nelse\nxdotool key alt+Left\nfi\n;;\nesac' >> /usr/local/bin/button
+  chmod +x /usr/local/bin/button
+  rm /etc/libinput-gestures.conf
+  echo -e "gesture swipe up swaymsg -t command workspace next_on_output\ngesture swipe down swaymsg -t command workspace prev_on_output\ngesture swipe right /usr/local/bin/button backward\ngesture swipe left /usr/local/bin/button forward" >> /etc/libinput-gestures.conf
+fi
 echo Setting logind ignore power key
 
 echo "HandlePowerKey=ignore" >> /etc/systemd/logind.conf
