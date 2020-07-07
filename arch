@@ -92,7 +92,6 @@ su $username -c 'yay -S breeze-default-cursor-theme'
 su $username -c 'yay -S wob'
 su $username -c 'yay -S autotiling'
 su $username -c 'yay -S redshift-wayland-git'
-su $username -c 'yay -S libinput-gestures'
 su $username -c 'yay -S swappy'
 su $username -c 'yay -S swaylock-effects-git'
 
