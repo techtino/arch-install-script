@@ -26,7 +26,10 @@ echo "Do you have any Wireless cards in your system? (Y/N)"
 read WirelessConfirmation
 
 echo -e "[Match]\nName=enp*\n\n[Network]\nDHCP=yes" >> /etc/systemd/network/20-wired.network
+
 systemctl enable systemd-networkd
+systemctl enable systemd-resolved
+
 if [ "$WirelessConfirmation" == "Y" ]; then
         pacman -S iwd
         echo -e "[General]\nEnableNetworkConfiguration=true" >> /etc/iwd/main.conf
@@ -110,13 +113,7 @@ cd bitfetch
 make CC=gcc bitfetch XINERAMA=NO X=NO
 make install
 
-su $username -c 'yay -S breeze-default-cursor-theme'
-su $username -c 'yay -S wob'
-su $username -c 'yay -S autotiling'
-su $username -c 'yay -S redshift-wayland-git'
-su $username -c 'yay -S libinput-gestures'
-su $username -c 'yay -S swappy'
-su $username -c 'yay -S swaylock-effects-git'
+su $username -c 'yay -S swaylock-effects-git swappy redshift-wayland-git autotiling wob breeze-default-cursor-theme'
 
 gpasswd -a $username input
 gpasswd -a $username video
@@ -128,7 +125,7 @@ if [ "$i3Confirmation" == "Y" ]; then
   su $username -c 'yay -S polybar'
 fi
 
-echo Are you using a laptop or a desktop? (L/D)
+echo "Are you using a laptop or a desktop? (L/D) (Assumes Desktop)"
 read DeviceType
 if [ "$DeviceType" == "L" ]; then
   pacman -S tlp light
