@@ -1,8 +1,6 @@
 #!/bin/bash
 
-pacman -S wget xorg-server noto-fonts polkit-gnome playerctl thunar thunar-archive-plugin file-roller zsh python-pip pulseaudio pulseaudio-alsa pavucontrol ttf-font-awesome base-devel python-pywal sway wofi vim neovim grub efibootmgr waybar kitty xorg-server-common xorg-server-xwayland chromium mako wl-clipboard swayidle slurp grim pamixer noto-fonts-emoji noto-fonts-cjk
-
-
+pacman -S wget xorg-server noto-fonts polkit-gnome playerctl thunar thunar-archive-plugin file-roller zsh python-pip pulseaudio pulseaudio-alsa pavucontrol ttf-font-awesome base-devel python-pywal sway wofi vim neovim efibootmgr waybar kitty xorg-server-common xorg-server-xwayland chromium mako wl-clipboard swayidle slurp grim pamixer noto-fonts-emoji noto-fonts-cjk
 
 ln -sf /usr/share/zoneinfo/Europe/London /etc/localtime
 
@@ -27,14 +25,12 @@ echo -e "127.0.0.1  localhost\n::1 localhost\n127.0.0.1   $hostname.localdomain 
 echo "Do you have any Wireless cards in your system? (Y/N)"
 read WirelessConfirmation
 
-if [ "$WirelessConfirmation" == "N" ]; then
-  EthernetAdapter=$(ls /sys/class/net | grep enp)
-  echo -e "[Match]\nName=$EthernetAdapter\n\n[Network]\nDHCP=yes" >> /etc/systemd/network/20-wired.network
-  systemctl enable systemd-networkd
-else
-  echo Using NetworkManager
-  pacman -S networkmanager
-  systemctl enable NetworkManager
+echo -e "[Match]\nName=enp*\n\n[Network]\nDHCP=yes" >> /etc/systemd/network/20-wired.network
+systemctl enable systemd-networkd
+if [ "$WirelessConfirmation" == "Y" ]; then
+        pacman -S iwd
+        echo -e "[General]\nEnableNetworkConfiguration=true" >> /etc/iwd/main.conf
+        systemctl enable iwd
 fi
 
 echo "Do you have a bluetooth adapter?"
@@ -44,8 +40,34 @@ if [ "$BluetoothConfirmation" == "Y" ]; then
   systemctl enable bluetooth
 fi
 
-grub-install --target=x86_64-efi --efi-directory=/boot --bootloader-id=GRUB
-grub-mkconfig -o /boot/grub/grub.cfg
+echo "Do you want to use Systemd-boot or grub? (grub is better for dual boot configuration) (G/S)"
+read BootloaderChoice
+
+echo "Where did you mount your EFI partition? (Default will be assumed at /boot)"
+read EFILocation
+
+[ -d "$EFILocation" ] || EFILocation=/boot 
+
+echo "Please enter CPU Type (for ucode installation) (AMD OR INTEL)"
+read cputype
+
+if [ "$cputype" == "AMD" ]; then
+        pacman -S amd-ucode
+        ucode=amd-ucode.img
+else
+        pacman -S intel-ucode
+        ucode=intel-ucode.img
+fi
+
+if [ "$BootloaderChoice" == "G" ]; then
+        pacman -S grub
+        grub-install --target=x86_64-efi --efi-directory=$EFILocation --bootloader-id=GRUB
+else
+        RootUUID=$(lsblk -nr -o UUID,MOUNTPOINT | grep -Po '.*(?= /$)')
+        bootctl --esp-path=$EFILocation install
+        echo -e "default    arch.conf\ntimeout  0\nconsole-mode max\neditor no" >> $EFILocation/loader/loader.conf
+        echo -e "title  Arch Linux\nlinux   /vmlinuz-linux\ninitrd /$ucode\ninitrd  /initramfs-linux.img\noptions root="UUID=$RootUUID" rw quiet" >> $EFILocation/loader/entries/arch.conf
+fi
 
 echo Set root password:
 passwd
@@ -54,7 +76,7 @@ echo Enter username for main account
 read username
 useradd -m $username
 
-echo set password for main account
+echo Set password for main account
 passwd $username
 
 gpasswd -a $username wheel
