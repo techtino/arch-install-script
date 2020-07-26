@@ -109,7 +109,7 @@ cd bitfetch
 make CC=gcc bitfetch XINERAMA=NO X=NO
 make install
 
-su $username -c 'yay -S swaylock-effects-git swappy redshift-wayland-git autotiling wob breeze-default-cursor-theme'
+su $username -c 'yay -S swaylock-effects-git swappy redshift-wayland-git autotiling wob-git breeze-default-cursor-theme'
 
 gpasswd -a $username input
 gpasswd -a $username video
