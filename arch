@@ -1,6 +1,6 @@
 #!/bin/bash
 
-pacman -S go wget xorg-server noto-fonts polkit-gnome playerctl thunar thunar-archive-plugin file-roller zsh python-pip pulseaudio pulseaudio-alsa pavucontrol ttf-font-awesome base-devel python-pywal sway wofi vim neovim efibootmgr waybar kitty xorg-server-common xorg-server-xwayland chromium mako wl-clipboard swayidle slurp grim pamixer noto-fonts-emoji noto-fonts-cjk
+pacman -S pkgfile go wget noto-fonts polkit-gnome playerctl thunar thunar-archive-plugin file-roller zsh python-pip pulseaudio pulseaudio-alsa pavucontrol ttf-font-awesome base-devel python-pywal sway wofi vim neovim waybar kitty mako wl-clipboard swayidle slurp grim pamixer noto-fonts-emoji noto-fonts-cjk zsh
 
 ln -sf /usr/share/zoneinfo/Europe/London /etc/localtime
 
@@ -63,7 +63,7 @@ else
 fi
 
 if [ "$BootloaderChoice" == "G" ]; then
-        pacman -S grub
+        pacman -S efibootmgr grub
         grub-install --target=x86_64-efi --efi-directory=$EFILocation --bootloader-id=GRUB
 else
         RootUUID=$(lsblk -nr -o UUID,MOUNTPOINT | grep -Po '.*(?= /$)')
@@ -86,11 +86,7 @@ gpasswd -a $username wheel
 
 echo '%wheel ALL=(ALL) NOPASSWD: ALL' | EDITOR='tee -a' visudo
 
-echo Installing zsh, setting as default shell and installing oh-my-zsh
-su $username -c 'sh -c "$(curl -fsSL https://raw.github.com/ohmyzsh/ohmyzsh/master/tools/install.sh)"'
-
-su $username -c 'git clone https://github.com/zsh-users/zsh-syntax-highlighting.git ${ZSH_CUSTOM:-~/.oh-my-zsh/custom}/plugins/zsh-syntax-highlighting'
-su $username -c 'git clone https://github.com/zsh-users/zsh-autosuggestions.git ${ZSH_CUSTOM:-~/.oh-my-zsh/custom}/plugins/zsh-autosuggestions'
+ch -s /bin/zsh $username
 
 echo Downloading and copying dotfiles
 cd /home/$username
@@ -121,7 +117,7 @@ gpasswd -a $username video
 echo Do you wish to install i3?
 read i3Confirmation
 if [ "$i3Confirmation" == "Y" ]; then
-  pacman -S xorg-xinit picom i3-gaps rofi dunst feh 
+  pacman -S xorg-server xorg-server-common xorg-xinit picom i3-gaps rofi dunst feh 
   su $username -c 'yay -S polybar'
 fi
 
