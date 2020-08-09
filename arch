@@ -1,6 +1,6 @@
 #!/bin/bash
 
-pacman -S jq pkgfile go wget noto-fonts polkit-gnome playerctl thunar thunar-archive-plugin file-roller zsh python-pip pulseaudio pulseaudio-alsa pavucontrol ttf-font-awesome base-devel python-pywal sway wofi vim neovim waybar kitty mako wl-clipboard swayidle slurp grim pamixer noto-fonts-emoji noto-fonts-cjk zsh
+pacman -S jq pkgfile go wget noto-fonts polkit-gnome playerctl thunar thunar-archive-plugin file-roller zsh python-pip pulseaudio pulseaudio-alsa pavucontrol ttf-font-awesome base-devel python-pywal sway vim neovim waybar kitty mako wl-clipboard swayidle slurp grim pamixer noto-fonts-emoji noto-fonts-cjk zsh
 
 ln -sf /usr/share/zoneinfo/Europe/London /etc/localtime
 
@@ -109,7 +109,7 @@ cd bitfetch
 make CC=gcc bitfetch XINERAMA=NO X=NO
 make install
 
-su $username -c 'yay -S swaylock-effects-git swappy redshift-wayland-git autotiling wob-git breeze-default-cursor-theme'
+su $username -c 'yay -S swaylock-effects-git swappy redshift-wayland-git autotiling wob-git breeze-default-cursor-theme rofi-lbonn-wayland-git'
 
 gpasswd -a $username input
 gpasswd -a $username video
