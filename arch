@@ -92,11 +92,12 @@ echo Downloading and copying dotfiles
 cd /home/$username
 git clone https://github.com/techtino/dotfiles
 cp -r dotfiles/. .
-git clone https://aur.archlinux.org/yay-git.git
 
+git clone https://aur.archlinux.org/yay-git.git
 chown -R $username:$username .
 cd yay-git
 su $username -c 'makepkg -si'
+
 cd /home/$username
 pip3 install wpgtk
 mkdir -p /home/$username/.config/wpg/templates
@@ -109,7 +110,10 @@ cd bitfetch
 make CC=gcc bitfetch XINERAMA=NO X=NO
 make install
 
-su $username -c 'yay -S swaylock-effects-git swappy redshift-wayland-git autotiling wob-git breeze-default-cursor-theme rofi-lbonn-wayland-git'
+su $username -c 'yay -S networkmanager-dmenu-git swaylock-effects-git swappy redshift-wayland-git autotiling wob-git breeze-default-cursor-theme rofi-lbonn-wayland-git'
+
+touch .cache/wal/mako.conf
+ln -s .cache/wal/mako.conf .config/mako/config
 
 gpasswd -a $username input
 gpasswd -a $username video
