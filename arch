@@ -91,6 +91,10 @@ ch -s /bin/zsh $username
 echo Downloading and copying dotfiles
 cd /home/$username
 git clone https://github.com/techtino/dotfiles
+cd dotfiles
+git submodule init
+git submodule update
+cd ..
 cp -r dotfiles/. .
 
 git clone https://aur.archlinux.org/yay-git.git
