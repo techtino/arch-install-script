@@ -22,20 +22,6 @@ echo $hostname >> /etc/hostname
 
 echo -e "127.0.0.1  localhost\n::1 localhost\n127.0.0.1   $hostname.localdomain $hostname" >> /etc/hosts
 
-echo "Do you have any Wireless cards in your system? (Y/N)"
-read WirelessConfirmation
-
-echo -e "[Match]\nName=enp*\n\n[Network]\nDHCP=yes" >> /etc/systemd/network/20-wired.network
-
-systemctl enable systemd-networkd
-systemctl enable systemd-resolved
-
-if [ "$WirelessConfirmation" == "Y" ]; then
-        pacman -S iwd
-        echo -e "[General]\nEnableNetworkConfiguration=true" >> /etc/iwd/main.conf
-        systemctl enable iwd
-fi
-
 echo "Do you have a bluetooth adapter?"
 read BluetoothConfirmation
 if [ "$BluetoothConfirmation" == "Y" ]; then
@@ -114,7 +100,9 @@ cd bitfetch
 make CC=gcc bitfetch XINERAMA=NO X=NO
 make install
 
-su $username -c 'yay -S networkmanager-dmenu-git swaylock-effects-git swappy redshift-wayland-git autotiling wob-git breeze-default-cursor-theme rofi-lbonn-wayland-git'
+su $username -c 'yay -S networkmanager-iwd networkmanager-dmenu-git swaylock-effects-git swappy redshift-wayland-git autotiling wob-git breeze-default-cursor-theme rofi-lbonn-wayland-git'
+
+systemctl enable iwd
 
 touch .cache/wal/mako.conf
 ln -s .cache/wal/mako.conf .config/mako/config
