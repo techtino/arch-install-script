@@ -72,7 +72,7 @@ gpasswd -a $username wheel
 
 echo '%wheel ALL=(ALL) NOPASSWD: ALL' | EDITOR='tee -a' visudo
 
-ch -s /bin/zsh $username
+chsh -s /bin/zsh $username
 
 echo Downloading and copying dotfiles
 cd /home/$username
