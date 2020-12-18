@@ -1,6 +1,6 @@
 #!/bin/bash
 
-pacman -S jq pkgfile go wget noto-fonts polkit-gnome playerctl thunar thunar-archive-plugin file-roller zsh python-pip pulseaudio pulseaudio-alsa pavucontrol ttf-font-awesome base-devel python-pywal sway vim neovim waybar kitty mako wl-clipboard swayidle slurp grim pamixer noto-fonts-emoji noto-fonts-cjk zsh
+pacman -S ntfs-3g gvfs gvfs-smb jq pkgfile go wget noto-fonts polkit-gnome playerctl thunar thunar-archive-plugin file-roller zsh python-pip pulseaudio pulseaudio-alsa pavucontrol ttf-font-awesome base-devel python-pywal sway vim neovim waybar kitty mako wl-clipboard swayidle slurp grim pamixer noto-fonts-emoji noto-fonts-cjk zsh
 
 ln -sf /usr/share/zoneinfo/Europe/London /etc/localtime
 
