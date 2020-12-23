@@ -51,6 +51,7 @@ fi
 if [ "$BootloaderChoice" == "G" ]; then
         pacman -S efibootmgr grub
         grub-install --target=x86_64-efi --efi-directory=$EFILocation --bootloader-id=GRUB
+        grub-mkconfig -o /boot/grub/grub.cfg
 else
         RootUUID=$(lsblk -nr -o UUID,MOUNTPOINT | grep -Po '.*(?= /$)')
         bootctl --esp-path=$EFILocation install
