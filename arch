@@ -1,6 +1,6 @@
 #!/bin/bash
 
-pacman -S xorg-xwayland networkmanager ntfs-3g gvfs gvfs-smb jq pkgfile go wget noto-fonts noto-fonts-emoji ttf-font-awesome polkit-gnome playerctl thunar thunar-archive-plugin file-roller zsh python-pip pulseaudio pulseaudio-alsa pavucontrol ttf-font-awesome base-devel python-pywal sway vim neovim waybar kitty mako wl-clipboard swayidle slurp grim pamixer noto-fonts-emoji noto-fonts-cjk foot
+pacman -S xdg-desktop-portal-wlr xorg-xwayland networkmanager ntfs-3g gvfs gvfs-smb jq pkgfile go wget noto-fonts noto-fonts-emoji ttf-font-awesome polkit-gnome playerctl thunar thunar-archive-plugin file-roller zsh python-pip pavucontrol ttf-font-awesome base-devel sway vim neovim waybar kitty mako wl-clipboard swayidle slurp grim pamixer noto-fonts-emoji noto-fonts-cjk foot pipewire pipewire-pulse wireplumber pipewire-jack pipewire-alsa
 
 ln -sf /usr/share/zoneinfo/Europe/London /etc/localtime
 
@@ -71,7 +71,7 @@ passwd $username
 
 gpasswd -a $username wheel
 
-echo '%wheel ALL=(ALL) NOPASSWD: ALL' | EDITOR='tee -a' visudo
+echo '%wheel ALL=(ALL) ALL' | EDITOR='tee -a' visudo
 
 chsh -s /bin/zsh $username
 
@@ -91,7 +91,7 @@ su $username -c 'makepkg -si'
 
 cd /home/$username
 
-su $username -c 'paru -S networkmanager-dmenu-git swappy autotiling wob-git rofi-lbonn-wayland-git greetd greetd-wlgreet'
+su $username -c 'paru -S networkmanager-dmenu-git swappy autotiling wob-git rofi-lbonn-wayland-git greetd greetd-gtkgreet wlogout swaylock-effects-git'
 
 systemctl enable NetworkManager
 
@@ -114,21 +114,18 @@ if [ "$DeviceType" == "L" ]; then
   echo Setting up touchpad gestures
   echo -e '#!/bin/sh\ncase "$@" in\nforward )\nif [ -n "$WAYLAND_DISPLAY" ]; then\nswaymsg seat seat0 cursor press BTN_EXTRA\nswaymsg seat seat0 cursor release BTN_EXTRA\nelse\nxdotool alt+Right\nfi\n;;\nbackward )\nif [ -n "$WAYLAND_DISPLAY" ]; then\nswaymsg seat seat0 cursor press BTN_SIDE\nswaymsg seat seat0 cursor release BTN_SIDE\nelse\nxdotool key alt+Left\nfi\n;;\nesac' >> /usr/local/bin/button
   chmod +x /usr/local/bin/button
-  rm /etc/libinput-gestures.conf
-  echo -e "gesture swipe up swaymsg -t command workspace next_on_output\ngesture swipe down swaymsg -t command workspace prev_on_output\ngesture swipe right /usr/local/bin/button backward\ngesture swipe left /usr/local/bin/button forward" >> /etc/libinput-gestures.conf
+  echo -e "gesture swipe up swaymsg -t command workspace next_on_output\ngesture swipe down swaymsg -t command workspace prev_on_output\ngesture swipe right /usr/local/bin/button backward\ngesture swipe left /usr/local/bin/button forward" > /etc/libinput-gestures.conf
 fi
 echo Setting logind ignore power key
 
-echo Setup sway launching with greetd
-echo -e "export GBM_BACKEND=nvidia-drm\nexport __GLX_VENDOR_LIBRARY_NAME=nvidia\nexport WLR_NO_HARDWARE_CURSORS=1\nexport MOZ_ENABLE_WAYLAND=1\nexport LIBVA_DRIVER_NAME=nvidia\nexport MOZ_DISABLE_RDD_SANDBOX=1\nexport EGL_PLATFORM=wayland\nsway --unsupported-gpu" >> /usr/bin/sway-launch
+echo -e "export _JAVA_AWT_WM_NONREPARENTING=1\nexport QT_QPA_PLATFORM=wayland-egl\nexport XDG_SESSION_TYPE=wayland\nexport XDG_SESSION_DESKTOP=sway\nexport XDG_CURRENT_DESKTOP=sway\nexport GBM_BACKEND=nvidia-drm\nexport __GLX_VENDOR_LIBRARY_NAME=nvidia\nexport WLR_NO_HARDWARE_CURSORS=1\nexport MOZ_ENABLE_WAYLAND=1\nexport LIBVA_DRIVER_NAME=nvidia\nexport MOZ_DISABLE_RDD_SANDBOX=1\nexport EGL_PLATFORM=wayland\nsway --unsupported-gpu" >> /usr/bin/sway-launch
 chmod +x /usr/bin/sway-launch
 
 echo -e "sway-launch\nstartx" >> /etc/greetd/environments
 
-echo -e 'exec "wlgreet --command sway; swaymsg exit"\ninclude /etc/sway/config.d/*' >> /etc/greetd/sway-config
+echo -e 'exec "gtkgreet -l; swaymsg exit"\ninclude /etc/sway/config.d/*' >> /etc/greetd/sway-config
 
 echo -e '[terminal]\nvt=1\n[default_session]\ncommand = "sway --unsupported-gpu --config /etc/greetd/sway-config"\nuser = "greeter"' > /etc/greetd/config.toml
-
 
 echo "HandlePowerKey=ignore" >> /etc/systemd/logind.conf
 
