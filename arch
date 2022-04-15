@@ -1,6 +1,6 @@
 #!/bin/bash
 
-pacman -S ntfs-3g gvfs gvfs-smb jq pkgfile go wget noto-fonts polkit-gnome playerctl thunar thunar-archive-plugin file-roller zsh python-pip pulseaudio pulseaudio-alsa pavucontrol ttf-font-awesome base-devel python-pywal sway vim neovim waybar kitty mako wl-clipboard swayidle slurp grim pamixer noto-fonts-emoji noto-fonts-cjk zsh
+pacman -S networkmanager ntfs-3g gvfs gvfs-smb jq pkgfile go wget noto-fonts polkit-gnome playerctl thunar thunar-archive-plugin file-roller zsh python-pip pulseaudio pulseaudio-alsa pavucontrol ttf-font-awesome base-devel python-pywal sway vim neovim waybar kitty mako wl-clipboard swayidle slurp grim pamixer noto-fonts-emoji noto-fonts-cjk zsh
 
 ln -sf /usr/share/zoneinfo/Europe/London /etc/localtime
 
@@ -84,29 +84,16 @@ git submodule update
 cd ..
 cp -r dotfiles/. .
 
-git clone https://aur.archlinux.org/yay-git.git
+git clone https://aur.archlinux.org/paru.git
 chown -R $username:$username .
-cd yay-git
+cd paru
 su $username -c 'makepkg -si'
 
 cd /home/$username
-pip3 install wpgtk
-mkdir -p /home/$username/.config/wpg/templates
-chown -R $username:$username .
-su $username -c 'wpg-install.sh -g'
-su $username -c 'wpg-install.sh -i'
 
-git clone https://gitlab.com/bit9tream/bitfetch.git
-cd bitfetch
-make CC=gcc bitfetch XINERAMA=NO X=NO
-make install
+su $username -c 'paru -S networkmanager-dmenu-git swappy redshift-wayland-git autotiling wob-git rofi-lbonn-wayland-git'
 
-su $username -c 'yay -S networkmanager-iwd networkmanager-dmenu-git swaylock-effects-git swappy redshift-wayland-git autotiling wob-git breeze-default-cursor-theme rofi-lbonn-wayland-git'
-
-systemctl enable iwd
-
-touch .cache/wal/mako.conf
-ln -s .cache/wal/mako.conf .config/mako/config
+systemctl enable NetworkManager
 
 gpasswd -a $username input
 gpasswd -a $username video
@@ -123,7 +110,7 @@ read DeviceType
 if [ "$DeviceType" == "L" ]; then
   pacman -S tlp light
   systemctl enable tlp
-  su $username -c 'yay -S libinput-gestures'
+  su $username -c 'paru -S libinput-gestures'
   echo Setting up touchpad gestures
   echo -e '#!/bin/sh\ncase "$@" in\nforward )\nif [ -n "$WAYLAND_DISPLAY" ]; then\nswaymsg seat seat0 cursor press BTN_EXTRA\nswaymsg seat seat0 cursor release BTN_EXTRA\nelse\nxdotool alt+Right\nfi\n;;\nbackward )\nif [ -n "$WAYLAND_DISPLAY" ]; then\nswaymsg seat seat0 cursor press BTN_SIDE\nswaymsg seat seat0 cursor release BTN_SIDE\nelse\nxdotool key alt+Left\nfi\n;;\nesac' >> /usr/local/bin/button
   chmod +x /usr/local/bin/button
