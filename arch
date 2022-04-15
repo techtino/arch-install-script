@@ -91,7 +91,7 @@ su $username -c 'makepkg -si'
 
 cd /home/$username
 
-su $username -c 'paru -S networkmanager-dmenu-git swappy redshift-wayland-git autotiling wob-git rofi-lbonn-wayland-git'
+su $username -c 'paru -S networkmanager-dmenu-git swappy autotiling wob-git rofi-lbonn-wayland-git'
 
 systemctl enable NetworkManager
 
