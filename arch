@@ -1,6 +1,6 @@
 #!/bin/bash
 
-pacman -S networkmanager ntfs-3g gvfs gvfs-smb jq pkgfile go wget noto-fonts polkit-gnome playerctl thunar thunar-archive-plugin file-roller zsh python-pip pulseaudio pulseaudio-alsa pavucontrol ttf-font-awesome base-devel python-pywal sway vim neovim waybar kitty mako wl-clipboard swayidle slurp grim pamixer noto-fonts-emoji noto-fonts-cjk zsh
+pacman -S networkmanager ntfs-3g gvfs gvfs-smb jq pkgfile go wget noto-fonts noto-fonts-emoji ttf-font-awesome polkit-gnome playerctl thunar thunar-archive-plugin file-roller zsh python-pip pulseaudio pulseaudio-alsa pavucontrol ttf-font-awesome base-devel python-pywal sway vim neovim waybar kitty mako wl-clipboard swayidle slurp grim pamixer noto-fonts-emoji noto-fonts-cjk foot
 
 ln -sf /usr/share/zoneinfo/Europe/London /etc/localtime
 
@@ -91,7 +91,7 @@ su $username -c 'makepkg -si'
 
 cd /home/$username
 
-su $username -c 'paru -S networkmanager-dmenu-git swappy autotiling wob-git rofi-lbonn-wayland-git'
+su $username -c 'paru -S networkmanager-dmenu-git swappy autotiling wob-git rofi-lbonn-wayland-git greetd greetd-wlgreet'
 
 systemctl enable NetworkManager
 
@@ -119,7 +119,25 @@ if [ "$DeviceType" == "L" ]; then
 fi
 echo Setting logind ignore power key
 
+echo Setup sway launching with greetd
+echo -e "export GBM_BACKEND=nvidia-drm\nexport __GLX_VENDOR_LIBRARY_NAME=nvidia\nexport WLR_NO_HARDWARE_CURSORS=1\nexport MOZ_ENABLE_WAYLAND=1\nexport LIBVA_DRIVER_NAME=nvidia\nexport MOZ_DISABLE_RDD_SANDBOX=1\nexport EGL_PLATFORM=wayland\nsway --unsupported-gpu" >> /usr/bin/sway-launch
+chmod +x /usr/bin/sway-launch
+
+echo -e "sway-launch\nstartx" >> /etc/greetd/environments
+
+echo -e 'exec "wlgreet --command sway; swaymsg exit"\ninclude /etc/sway/config.d/*'
+
+echo -e '[terminal]\nvt=1\n[default_session]\ncommand = "sway --unsupported-gpu --config /etc/greetd/sway-config"\nuser = "greeter"' >> /etc/greetd/config.toml
+
+
 echo "HandlePowerKey=ignore" >> /etc/systemd/logind.conf
+
+
+
+
+
+
+
 
 echo Its time to reboot, done here.
 read
