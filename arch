@@ -1,9 +1,6 @@
 #!/bin/bash
 
-# Speed up pacman
-echo -e "ParallelDownloads = 25" >> /etc/pacman.conf
-
-pacman -S networkmanager ntfs-3g gvfs gvfs-smb jq pkgfile go wget noto-fonts noto-fonts-emoji ttf-font-awesome polkit-gnome playerctl thunar thunar-archive-plugin file-roller zsh python-pip pulseaudio pulseaudio-alsa pavucontrol ttf-font-awesome base-devel python-pywal sway vim neovim waybar kitty mako wl-clipboard swayidle slurp grim pamixer noto-fonts-emoji noto-fonts-cjk foot
+pacman -S xorg-xwayland networkmanager ntfs-3g gvfs gvfs-smb jq pkgfile go wget noto-fonts noto-fonts-emoji ttf-font-awesome polkit-gnome playerctl thunar thunar-archive-plugin file-roller zsh python-pip pulseaudio pulseaudio-alsa pavucontrol ttf-font-awesome base-devel python-pywal sway vim neovim waybar kitty mako wl-clipboard swayidle slurp grim pamixer noto-fonts-emoji noto-fonts-cjk foot
 
 ln -sf /usr/share/zoneinfo/Europe/London /etc/localtime
 
@@ -128,19 +125,14 @@ chmod +x /usr/bin/sway-launch
 
 echo -e "sway-launch\nstartx" >> /etc/greetd/environments
 
-echo -e 'exec "wlgreet --command sway; swaymsg exit"\ninclude /etc/sway/config.d/*'
+echo -e 'exec "wlgreet --command sway; swaymsg exit"\ninclude /etc/sway/config.d/*' >> /etc/greetd/sway-config
 
 echo -e '[terminal]\nvt=1\n[default_session]\ncommand = "sway --unsupported-gpu --config /etc/greetd/sway-config"\nuser = "greeter"' >> /etc/greetd/config.toml
 
 
 echo "HandlePowerKey=ignore" >> /etc/systemd/logind.conf
 
-
-
-
-
-
-
+systemctl enable greetd
 
 echo Its time to reboot, done here.
 read
