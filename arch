@@ -1,5 +1,8 @@
 #!/bin/bash
 
+# Speed up pacman
+echo -e "ParallelDownloads = 25" >> /etc/pacman.conf
+
 pacman -S networkmanager ntfs-3g gvfs gvfs-smb jq pkgfile go wget noto-fonts noto-fonts-emoji ttf-font-awesome polkit-gnome playerctl thunar thunar-archive-plugin file-roller zsh python-pip pulseaudio pulseaudio-alsa pavucontrol ttf-font-awesome base-devel python-pywal sway vim neovim waybar kitty mako wl-clipboard swayidle slurp grim pamixer noto-fonts-emoji noto-fonts-cjk foot
 
 ln -sf /usr/share/zoneinfo/Europe/London /etc/localtime
