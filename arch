@@ -127,7 +127,7 @@ echo -e "sway-launch\nstartx" >> /etc/greetd/environments
 
 echo -e 'exec "wlgreet --command sway; swaymsg exit"\ninclude /etc/sway/config.d/*' >> /etc/greetd/sway-config
 
-echo -e '[terminal]\nvt=1\n[default_session]\ncommand = "sway --unsupported-gpu --config /etc/greetd/sway-config"\nuser = "greeter"' >> /etc/greetd/config.toml
+echo -e '[terminal]\nvt=1\n[default_session]\ncommand = "sway --unsupported-gpu --config /etc/greetd/sway-config"\nuser = "greeter"' > /etc/greetd/config.toml
 
 
 echo "HandlePowerKey=ignore" >> /etc/systemd/logind.conf
